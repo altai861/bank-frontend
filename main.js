@@ -9,6 +9,7 @@ const renderLogin = async () => {
   app.innerHTML = `
     <div class="container">
       <h1 align="center">Нэвтрэх</h1>
+      <p>Сайн байна уу. Хэрэв та бүртгэлтэй бол өөрийн нэр нууц үгээр нэвтэрч болно. Хэрэв та бүртгэлгүй бол одоо байгаа нэвтрэх хэсгээр өөрийн нэр нууц үгийг зохион нэвтрэх болон бүртгүүлэхийг хамтад нь хийх боломжтой.</p>
       <form id="login-form">
         <label htmlFor="username">Нэр</label>
         <input type="text" id="username" placeholder="Username" required>
@@ -77,7 +78,8 @@ const renderHome = async () => {
         <div><button id="logout-button">Гарах</button></div>
       </div>
       <div id="main-content">
-
+          <h4>Сайн байна уу</h4>
+          <p>Танд манай апп-аар өөрийн дансны мэдээлэл болон гүйлгээнийхээ мэдээллийг харах боломжтойгоос гадна шинэ данс нээх (нээсэн данс бүр 100'000₮ ийн үлдэгдэлтэй) болон өөр дансууд руу гүйлгээ хийх боломжтой.</p>
       </div>
     <div> 
   `
@@ -576,9 +578,10 @@ const renderMakeTransaction = async (div) => {
 
     if (response.ok) {
         alert("Гүйлгээ амжилттай хийгдлээ.");
-        renderTransactions();
+        await renderTransactions(div);
     } else {
-        alert("Гүйлгээ амжилтгүй боллоо.");
+        alert("Гүйлгээ амжилтгүй боллоо. Таны дансны үлдэгдэл хүрэхгүй байна.");
+        await renderTransactions(div);
     }
   });
 
