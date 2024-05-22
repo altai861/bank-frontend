@@ -1,6 +1,7 @@
 (function(){const o=document.createElement("link").relList;if(o&&o.supports&&o.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))n(t);new MutationObserver(t=>{for(const e of t)if(e.type==="childList")for(const s of e.addedNodes)s.tagName==="LINK"&&s.rel==="modulepreload"&&n(s)}).observe(document,{childList:!0,subtree:!0});function a(t){const e={};return t.integrity&&(e.integrity=t.integrity),t.referrerPolicy&&(e.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?e.credentials="include":t.crossOrigin==="anonymous"?e.credentials="omit":e.credentials="same-origin",e}function n(t){if(t.ep)return;t.ep=!0;const e=a(t);fetch(t.href,e)}})();const x=document.getElementById("app"),u="https://bank-bankend.onrender.com";let b=localStorage.getItem("accessToken");const g=async()=>{x.innerHTML=`
     <div class="container">
       <h1 align="center">Нэвтрэх</h1>
+      <p>Сайн байна уу. Хэрэв та бүртгэлтэй бол өөрийн нэр нууц үгээр нэвтэрч болно. Хэрэв та бүртгэлгүй бол одоо байгаа нэвтрэх хэсгээр өөрийн нэр нууц үгийг зохион нэвтрэх болон бүртгүүлэхийг хамтад нь хийх боломжтой.</p>
       <form id="login-form">
         <label htmlFor="username">Нэр</label>
         <input type="text" id="username" placeholder="Username" required>
@@ -19,7 +20,8 @@
         <div><button id="logout-button">Гарах</button></div>
       </div>
       <div id="main-content">
-
+          <h4>Сайн байна уу</h4>
+          <p>Танд манай апп-аар өөрийн дансны мэдээлэл болон гүйлгээнийхээ мэдээллийг харах боломжтойгоос гадна шинэ данс нээх (нээсэн данс бүр 100'000₮ ийн үлдэгдэлтэй) болон өөр дансууд руу гүйлгээ хийх боломжтой.</p>
       </div>
     <div> 
   `,document.getElementById("logout-button").addEventListener("click",()=>{D(),T()});const o=document.getElementById("my-bank-accounts"),a=document.getElementById("create-account"),n=document.getElementById("transactions"),t=document.getElementById("make-transaction"),e=document.getElementById("main-content");o.addEventListener("click",async()=>{await N(e)}),a.addEventListener("click",async()=>{await S(e)}),n.addEventListener("click",async()=>{await j(e)}),t.addEventListener("click",async()=>{await z(e)})},N=async c=>{let o=null;const a=await fetch(u+"/bankAccount",{method:"GET",credentials:"include",headers:{"Content-Type":"application/json",Authorization:`Bearer ${b}`}});if(a.status===403){g();return}else a.status!==404&&(o=await a.json());if(!o)c.innerHTML=`
