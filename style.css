@@ -112,3 +112,13 @@ img {
 .transaction-negative {
   color: rgb(180, 36, 36);
 }
+
+#loading {
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #333;
+}

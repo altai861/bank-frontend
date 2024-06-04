@@ -51,6 +51,7 @@ const renderLogin = async () => {
 
 
 const fetchInfo = async () => {
+  document.getElementById("loading").style.display = "block";
   const bankAccountResponse = await fetch(apiURL + "/bankAccount", {
     method: 'GET',
     credentials: 'include',
@@ -59,6 +60,7 @@ const fetchInfo = async () => {
       'Authorization': `Bearer ${accessToken}`
     },
   })
+  document.getElementById("loading").style.display = "none";
   if (bankAccountResponse.status === 403) {
     renderLogin();
   } else {
@@ -544,45 +546,51 @@ const renderMakeTransaction = async (div) => {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const fromAccount = fromAccountSelect.value;
-    const toBank = toBankSelect.value;
-    const toAccount = toAccountInput.value;
-    const amount = amountInput.value;
-    const currency = currencySelect.value;
-    const description = descriptionInput.value;
-
-    const selectedAccount = myAccounts.find(account => account.bankAccountNumber === fromAccount);
-    if (selectedAccount.balance < amount) {
-        alert("Үлдэгдэл хүрэлцэхгүй байна.");
-        return;
-    }
-
-    const transaction = {
-        senderId: fromAccount,
-        receiverId: toAccount,
-        amount: parseFloat(amount),
-        moneyType: currency,
-        transactionValue: description,
-        date: new Date()
-    };
-
-    const response = await fetch(apiURL + "/transaction", {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-        },
-        body: JSON.stringify(transaction)
-    });
-
-    if (response.ok) {
-        alert("Гүйлгээ амжилттай хийгдлээ.");
-        await renderTransactions(div);
+    if (!receiverLocked) {
+      alert("Таны оруулсан данс хүчингүй байна.");
+      return;
     } else {
-        alert("Гүйлгээ амжилтгүй боллоо. Таны дансны үлдэгдэл хүрэхгүй байна.");
-        await renderTransactions(div);
+      const fromAccount = fromAccountSelect.value;
+      const toBank = toBankSelect.value;
+      const toAccount = toAccountInput.value;
+      const amount = amountInput.value;
+      const currency = currencySelect.value;
+      const description = descriptionInput.value;
+  
+      const selectedAccount = myAccounts.find(account => account.bankAccountNumber === fromAccount);
+      if (selectedAccount.balance < amount) {
+          alert("Үлдэгдэл хүрэлцэхгүй байна.");
+          return;
+      }
+  
+      const transaction = {
+          senderId: fromAccount,
+          receiverId: toAccount,
+          amount: parseFloat(amount),
+          moneyType: currency,
+          transactionValue: description,
+          date: new Date()
+      };
+  
+      const response = await fetch(apiURL + "/transaction", {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`
+          },
+          body: JSON.stringify(transaction)
+      });
+  
+      if (response.ok) {
+          alert("Гүйлгээ амжилттай хийгдлээ.");
+          await renderTransactions(div);
+      } else {
+          alert("Гүйлгээ амжилтгүй боллоо. Таны дансны үлдэгдэл хүрэхгүй байна.");
+          await renderTransactions(div);
+      }
     }
+    
   });
 
 
